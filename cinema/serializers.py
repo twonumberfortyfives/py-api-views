@@ -17,7 +17,6 @@ class MovieSerializer(serializers.Serializer):
         movie = Movie.objects.create(**validated_data)
         movie.actors.set(actors_data)
         movie.genres.set(genres_data)
-        movie.save()
         return movie
 
     def update(self, instance, validated_data):
