@@ -1,4 +1,3 @@
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status, generics, mixins, viewsets
 
@@ -6,7 +5,12 @@ from django.shortcuts import get_object_or_404
 from rest_framework.views import APIView
 
 from cinema.models import Movie, Genre, Actor, CinemaHall
-from cinema.serializers import MovieSerializer, GenreSerializer, ActorSerializer, CinemaHallSerializer
+from cinema.serializers import (
+    MovieSerializer,
+    GenreSerializer,
+    ActorSerializer,
+    CinemaHallSerializer,
+)
 
 
 # @api_view(["GET", "POST"])
@@ -22,7 +26,10 @@ from cinema.serializers import MovieSerializer, GenreSerializer, ActorSerializer
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_201_CREATED)
 #
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(
+#         serializer.errors,
+#         status=status.HTTP_400_BAD_REQUEST
+#         )
 #
 #
 # @api_view(["GET", "PUT", "DELETE"])
@@ -39,7 +46,10 @@ from cinema.serializers import MovieSerializer, GenreSerializer, ActorSerializer
 #             serializer.save()
 #             return Response(serializer.data, status=status.HTTP_200_OK)
 #
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#         return Response(
+#         serializer.errors,
+#         status=status.HTTP_400_BAD_REQUEST
+#         )
 #
 #     if request.method == "DELETE":
 #         movie.delete()
@@ -71,13 +81,18 @@ class GenreDetail(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def put(self, request, pk):
-        serializer = self.serializer_class(self.get_object(pk=pk), data=request.data)
+        serializer = self.serializer_class(
+            self.get_object(pk=pk),
+            data=request.data
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
 
     def patch(self, request, pk):
-        serializer = self.serializer_class(self.get_object(pk=pk), data=request.data, partial=True)
+        serializer = self.serializer_class(
+            self.get_object(pk=pk), data=request.data, partial=True
+        )
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -89,9 +104,7 @@ class GenreDetail(APIView):
 
 
 class ActorList(
-    generics.GenericAPIView,
-    mixins.ListModelMixin,
-    mixins.CreateModelMixin
+    generics.GenericAPIView, mixins.ListModelMixin, mixins.CreateModelMixin
 ):
     queryset = Actor.objects.all()
     serializer_class = ActorSerializer
